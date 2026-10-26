@@ -1,0 +1,835 @@
+<!doctype html>
+<html lang="en-IE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ardteist Prep</title>
+<meta name="description" content="Leaving Certificate practice questions with worked solutions, mock tests, progress tracking and a CAO points calculator.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: squared exam-copy paper as the ground; a sticky top bar; one content column (max 1120px) whose views swap in place. Highlighter-yellow marks what matters. */
+:root{
+  --paper:#F4F8F7; --surface:#FFFFFF; --ink:#11282B; --muted:#55706D; --line:#D5E2E0; --grid:#E3ECEA;
+  --sea:#0E6A64; --sea-soft:#DCEEEB; --hl:#F5D04E; --hl-ink:#3B2F00;
+  --good:#1E7A46; --good-soft:#DFF1E6; --bad:#B3392F; --bad-soft:#F8E1DE; --warn:#9A6A00; --warn-soft:#FBEFCF;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#0D1819; --surface:#132325; --ink:#E4EEEC; --muted:#93AEAA; --line:#24393A; --grid:#172A2B;
+  --sea:#56C2B4; --sea-soft:#163A37; --hl:#E9C140; --hl-ink:#2A2100;
+  --good:#5BC98A; --good-soft:#14301F; --bad:#F08A7F; --bad-soft:#3A1A17; --warn:#E5B54A; --warn-soft:#33280C; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --paper:#0D1819; --surface:#132325; --ink:#E4EEEC; --muted:#93AEAA; --line:#24393A; --grid:#172A2B;
+  --sea:#56C2B4; --sea-soft:#163A37; --hl:#E9C140; --hl-ink:#2A2100;
+  --good:#5BC98A; --good-soft:#14301F; --bad:#F08A7F; --bad-soft:#3A1A17; --warn:#E5B54A; --warn-soft:#33280C; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.1;margin:0}
+p{margin:0}
+a{color:var(--sea)}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--sea);outline-offset:2px;border-radius:6px}
+pre{font-family:var(--mono);font-size:14px;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:10px 12px;overflow-x:auto;margin:8px 0;line-height:1.45}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.mark{background:linear-gradient(transparent 55%,var(--hl) 55%,var(--hl) 92%,transparent 92%);padding:0 .08em}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:16px;min-height:60px;flex-wrap:wrap;padding-block:8px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:-.01em}
+.brand svg{flex:none}
+.nav{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+.nav a{text-decoration:none;color:var(--muted);font-weight:700;font-size:15px;padding:8px 12px;border-radius:8px}
+.nav a:hover{color:var(--ink);background:var(--paper)}
+.nav a[aria-current="page"]{color:var(--ink);background:var(--sea-soft)}
+@media (max-width:640px){ .nav{margin-left:0;width:100%;overflow-x:auto;flex-wrap:nowrap} .nav a{white-space:nowrap;padding:6px 10px} }
+
+main{padding-block:28px 64px}
+.view{display:grid;gap:28px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.15fr 1fr;gap:32px;align-items:center;padding-block:12px 8px}
+.hero h1{font-size:clamp(38px,6vw,68px);font-weight:800;letter-spacing:-.03em}
+.hero .lede{font-size:18px;color:var(--muted);max-width:52ch;margin-top:16px}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);padding:11px 18px;border-radius:999px;font-weight:700;text-decoration:none;font-size:15px}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.small{padding:7px 14px;font-size:14px}
+.btn:hover{filter:brightness(1.1)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.facts{display:flex;gap:24px;flex-wrap:wrap;margin-top:28px;font-size:14px;color:var(--muted)}
+.facts b{display:block;font-family:var(--display);font-size:26px;color:var(--ink);font-variant-numeric:tabular-nums}
+@media (max-width:860px){ .hero{grid-template-columns:1fr} }
+
+/* question card */
+.qcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:grid;gap:14px;min-width:0}
+.qcard.feature{box-shadow:0 18px 40px -24px rgba(14,60,58,.45);transform:rotate(-.6deg)}
+.qmeta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;background:var(--paper);border:1px solid var(--line);font-weight:700;color:var(--muted);font-size:12.5px}
+.chip.sea{background:var(--sea-soft);border-color:transparent;color:var(--sea)}
+.chip.good{background:var(--good-soft);border-color:transparent;color:var(--good)}
+.chip.bad{background:var(--bad-soft);border-color:transparent;color:var(--bad)}
+.chip.warn{background:var(--warn-soft);border-color:transparent;color:var(--warn)}
+.qtext{font-size:17px;min-width:0;overflow-wrap:anywhere}
+.qtext i{display:block;font-style:italic;line-height:1.6}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;background:var(--paper);border:1.5px solid var(--line);border-radius:8px;padding:10px 12px;font-size:15.5px}
+.opt:hover:not([disabled]){border-color:var(--sea)}
+.opt .k{flex:none;width:24px;height:24px;border-radius:50%;border:1.5px solid var(--muted);display:grid;place-items:center;font-size:12px;font-weight:700;color:var(--muted)}
+.opt.sel{border-color:var(--sea);background:var(--sea-soft)}
+.opt.sel .k{background:var(--sea);border-color:var(--sea);color:var(--surface)}
+.opt.right{border-color:var(--good);background:var(--good-soft)}
+.opt.right .k{background:var(--good);border-color:var(--good);color:var(--surface)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.wrong .k{background:var(--bad);border-color:var(--bad);color:var(--surface)}
+.opt[disabled]{cursor:default}
+.qactions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.sol{border-left:3px solid var(--hl);background:var(--paper);padding:12px 14px;border-radius:0 8px 8px 0;font-size:15.5px;min-width:0;overflow-wrap:anywhere}
+.sol .h{font-weight:700;margin-bottom:4px;font-family:var(--display)}
+.verdict{font-weight:700}
+.verdict.ok{color:var(--good)} .verdict.no{color:var(--bad)}
+.bm{margin-left:auto;background:none;border:1px solid var(--line);border-radius:8px;padding:6px 8px;display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:13px;font-weight:700}
+.bm[aria-pressed="true"]{color:var(--hl-ink);background:var(--hl);border-color:var(--hl)}
+.rate{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:14px}
+.rate button{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-weight:700;font-size:14px}
+.rate button[aria-pressed="true"][data-r="right"]{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+.rate button[aria-pressed="true"][data-r="partly"]{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
+.rate button[aria-pressed="true"][data-r="wrong"]{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+
+/* sections */
+.sec-head{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.sec-head h2{font-size:clamp(26px,3.4vw,36px);font-weight:800;letter-spacing:-.02em}
+.sec-head p{color:var(--muted);max-width:60ch}
+
+/* subject grid */
+.subjects{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+@media (max-width:980px){ .subjects{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:520px){ .subjects{grid-template-columns:1fr} }
+.subj{display:grid;grid-template-rows:auto auto 1fr auto;gap:10px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px;transition:transform .15s,border-color .15s}
+.subj:hover{transform:translateY(-2px);border-color:var(--sea)}
+.subj .code{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.subj h3{font-size:22px;font-weight:700}
+.subj .exam{font-size:13.5px;color:var(--muted)}
+.subj .foot{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.bar{height:6px;border-radius:99px;background:var(--grid);overflow:hidden;margin-top:6px}
+.bar span{display:block;height:100%;background:var(--sea);border-radius:99px}
+
+/* feature strip */
+.features{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--surface)}
+.features div{padding:20px;border-right:1px solid var(--line)}
+.features div:last-child{border-right:0}
+.features h3{font-size:17px;font-weight:700;margin-bottom:6px}
+.features p{font-size:14.5px;color:var(--muted)}
+@media (max-width:760px){ .features{grid-template-columns:1fr} .features div{border-right:0;border-bottom:1px solid var(--line)} .features div:last-child{border-bottom:0} }
+
+.note{background:var(--surface);border:1px dashed var(--line);border-radius:var(--r);padding:16px 18px;font-size:14.5px;color:var(--muted)}
+.note b{color:var(--ink)}
+
+/* practice */
+.practice-head{display:grid;gap:10px}
+.practice-head h1{font-size:clamp(32px,5vw,48px);font-weight:800;letter-spacing:-.02em}
+.toolbar{display:grid;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filters .lbl{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:700;margin-right:4px;min-width:56px}
+.pill{border:1.5px solid var(--line);background:var(--paper);border-radius:999px;padding:5px 12px;font-size:14px;font-weight:700;color:var(--muted)}
+.pill[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.pill .n{font-variant-numeric:tabular-nums;opacity:.7;margin-left:4px;font-weight:400}
+.qlist{display:grid;gap:14px}
+.empty{padding:40px 20px;text-align:center;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+
+/* mock */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:grid;gap:16px}
+.form-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+@media (max-width:760px){ .form-grid{grid-template-columns:1fr 1fr} }
+label.f{display:grid;gap:6px;font-weight:700;font-size:14px}
+select,input[type=number]{background:var(--paper);border:1.5px solid var(--line);border-radius:8px;padding:9px 10px;width:100%}
+.timer{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.timer .clock{font-family:var(--mono);font-size:22px;font-weight:600}
+.timer .clock.low{color:var(--bad)}
+.steps{display:flex;gap:4px;flex-wrap:wrap}
+.steps span{width:22px;height:6px;border-radius:99px;background:var(--grid)}
+.steps span.done{background:var(--sea)} .steps span.cur{background:var(--hl)}
+.score{display:flex;gap:28px;flex-wrap:wrap}
+.score div{display:grid}
+.score b{font-family:var(--display);font-size:40px;line-height:1;font-variant-numeric:tabular-nums}
+.score span{font-size:13px;color:var(--muted)}
+
+/* progress */
+.prog-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:15px}
+.prog-table th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--line)}
+.prog-table td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.prog-table td.num{text-align:right}
+.tablebox{overflow-x:auto}
+.weak{display:flex;gap:6px;flex-wrap:wrap}
+.confirm{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:14px}
+
+/* points */
+.pts{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:860px){ .pts{grid-template-columns:1fr} }
+.prow{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr) minmax(0,1fr) 64px;gap:8px;align-items:center}
+.prow .p{font-family:var(--mono);text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+.prow .p.drop{opacity:.4;text-decoration:line-through}
+.total{font-family:var(--display);font-size:64px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+.scale{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:14px}
+.scale th,.scale td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left}
+.scale td:last-child,.scale th:last-child{text-align:right}
+
+footer{border-top:1px solid var(--line);background:var(--surface)}
+footer .wrap{padding-block:28px;display:grid;gap:10px;font-size:14px;color:var(--muted)}
+footer a{font-weight:700}
+
+@media (prefers-reduced-motion:reduce){ *{transition:none!important;animation:none!important} .qcard.feature{transform:none} }
+@media (max-width:520px){ .qcard{padding:16px} .prow{grid-template-columns:1fr 1fr; } .prow .sname{grid-column:1/-1} .prow .p{grid-column:2} }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#home" aria-label="Ardteist Prep home">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><rect x="1.5" y="1.5" width="27" height="27" rx="7" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M8 21 L15 8 L22 21" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.5 16.5 H19.5" stroke="var(--hl)" stroke-width="3.2" stroke-linecap="round"/></svg>
+      Ardteist Prep
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#home" data-nav="home">Home</a>
+      <a href="#subjects" data-nav="subjects">Subjects</a>
+      <a href="#mock" data-nav="mock">Mock test</a>
+      <a href="#progress" data-nav="progress">My progress</a>
+      <a href="#points" data-nav="points">CAO points</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="app"></main>
+
+<footer>
+  <div class="wrap">
+    <p><b style="color:var(--ink)">Official exam papers and marking schemes</b> are published by the State Examinations Commission in its <a href="https://www.examinations.ie/exammaterialarchive/" target="_blank" rel="noopener">exam material archive</a>. Subject specifications are on <a href="https://www.curriculumonline.ie/senior-cycle/" target="_blank" rel="noopener">curriculumonline.ie</a>.</p>
+    <p>Ardteist Prep's questions are original practice questions written in the style of the Leaving Certificate. The site is independent and not connected with the SEC, the NCCA or the Department of Education. Your progress is saved only in this browser.</p>
+  </div>
+</footer>
+
+<script>
+/* Ardteist Prep question bank — original practice questions written in the style of the Leaving Certificate.
+   Row format: [subject, level ("H" Higher, "O" Ordinary, "HO" both), topic, question, options or null for a written question, correct option index, worked solution] */
+const QUESTION_ROWS = [
+/* ---------------- MATHEMATICS ---------------- */
+["maths","HO","Algebra","Solve 2x² − 5x − 3 = 0.",["x = 3 or x = −½","x = −3 or x = ½","x = 3 or x = ½","x = −3 or x = −½"],0,
+ "Factorise: (2x + 1)(x − 3) = 0. So 2x + 1 = 0 gives x = −½, and x − 3 = 0 gives x = 3.<br>Check with the formula: x = (5 ± √(25 + 24)) / 4 = (5 ± 7) / 4, so x = 3 or x = −½."],
+["maths","O","Algebra","Expand and simplify (x + 4)(x − 2).",["x² + 2x − 8","x² − 2x − 8","x² + 6x − 8","x² + 2x + 8"],0,
+ "Multiply each term: x·x + x·(−2) + 4·x + 4·(−2) = x² − 2x + 4x − 8 = x² + 2x − 8."],
+["maths","H","Complex numbers","Let z₁ = 2 + 3i and z₂ = 1 − i. Write z₁ / z₂ in the form a + bi.",null,null,
+ "Multiply top and bottom by the conjugate of the denominator, 1 + i:<br>(2 + 3i)(1 + i) / ((1 − i)(1 + i))<br>Top: 2 + 2i + 3i + 3i² = 2 + 5i − 3 = −1 + 5i<br>Bottom: 1 − i² = 1 + 1 = 2<br><b>Answer: z₁ / z₂ = −½ + (5/2)i</b>"],
+["maths","HO","Complex numbers","Find the modulus of z = 5 − 12i.",["13","7","17","√119"],0,
+ "|z| = √(5² + (−12)²) = √(25 + 144) = √169 = 13."],
+["maths","HO","Differential calculus","Find the x-coordinates of the turning points of y = x³ − 6x² + 4.",["x = 0 and x = 4","x = 0 and x = 6","x = 2 and x = −2","x = 4 only"],0,
+ "dy/dx = 3x² − 12x. Set it equal to zero: 3x(x − 4) = 0, so x = 0 or x = 4.<br>Second derivative 6x − 12 is negative at x = 0 (local maximum) and positive at x = 4 (local minimum)."],
+["maths","H","Differential calculus","Differentiate y = e^(2x) sin x.",["2e^(2x) sin x + e^(2x) cos x","2e^(2x) cos x","e^(2x) cos x","2e^(2x) sin x − e^(2x) cos x"],0,
+ "Use the product rule: if y = uv then dy/dx = u'v + uv'.<br>u = e^(2x), u' = 2e^(2x); v = sin x, v' = cos x.<br>dy/dx = 2e^(2x) sin x + e^(2x) cos x = e^(2x)(2 sin x + cos x)."],
+["maths","H","Integral calculus","Evaluate ∫₀² (3x² + 2x) dx.",null,null,
+ "Integrate term by term: ∫(3x² + 2x) dx = x³ + x².<br>Apply the limits: (2³ + 2²) − (0 + 0) = 8 + 4 = <b>12</b>."],
+["maths","O","Sequences and series","An arithmetic sequence has first term 7 and common difference 4. Find T₁₀, the tenth term.",["43","47","40","39"],0,
+ "Tₙ = a + (n − 1)d = 7 + (10 − 1)(4) = 7 + 36 = 43."],
+["maths","H","Sequences and series","(a) Find the sum to infinity of 12 + 6 + 3 + …<br>(b) The series 3 + 5 + 7 + … has n terms whose sum is 120. Find n.",null,null,
+ "(a) Geometric with a = 12, r = ½. Since |r| < 1, S∞ = a / (1 − r) = 12 / ½ = <b>24</b>.<br>(b) Arithmetic with a = 3, d = 2. Sₙ = (n/2)(2a + (n − 1)d) = (n/2)(6 + 2n − 2) = n(n + 2).<br>n² + 2n − 120 = 0 → (n + 12)(n − 10) = 0 → <b>n = 10</b> (n must be positive)."],
+["maths","HO","Financial maths","€5,000 is invested at 3% per annum compound interest. What is it worth after 4 years, to the nearest cent?",["€5,627.54","€5,600.00","€5,463.64","€5,750.00"],0,
+ "F = P(1 + i)ᵗ = 5000 × 1.03⁴ = 5000 × 1.12550881 = €5,627.54.<br>€5,600 is the simple-interest answer, a common slip."],
+["maths","H","Financial maths","A savings account pays an annual equivalent rate (AER) of 6%. Find the equivalent monthly interest rate, correct to three decimal places.",null,null,
+ "Monthly rate r satisfies (1 + r)¹² = 1.06.<br>1 + r = 1.06^(1/12) = 1.0048676…<br><b>r ≈ 0.487% per month</b>.<br>Dividing 6% by 12 (0.5%) is wrong because it ignores compounding."],
+["maths","HO","Probability","Two fair six-sided dice are thrown. What is the probability that the total is 7?",["1/6","7/36","1/12","1/36"],0,
+ "There are 36 equally likely outcomes. Totals of 7: (1,6), (2,5), (3,4), (4,3), (5,2), (6,1), so 6 outcomes.<br>P = 6/36 = 1/6."],
+["maths","H","Probability","Events A and B are independent, with P(A) = 0.5 and P(B) = 0.4. Find P(A ∩ B) and P(A ∪ B).",null,null,
+ "Independent, so P(A ∩ B) = P(A) × P(B) = 0.5 × 0.4 = <b>0.2</b>.<br>P(A ∪ B) = P(A) + P(B) − P(A ∩ B) = 0.5 + 0.4 − 0.2 = <b>0.7</b>."],
+["maths","O","Statistics","Find the mean of 4, 7, 7, 9, 13.",["8","7","9","40"],0,
+ "Mean = (4 + 7 + 7 + 9 + 13) / 5 = 40 / 5 = 8. (The median and mode are both 7.)"],
+["maths","HO","Coordinate geometry: line","Find the equation of the line through (1, 2) and (4, 11).",["y = 3x − 1","y = 3x + 1","y = 9x − 7","y = ⅓x + 5/3"],0,
+ "Slope m = (11 − 2) / (4 − 1) = 9 / 3 = 3.<br>y − 2 = 3(x − 1) → y = 3x − 1. Check: at x = 4, y = 11 ✓."],
+["maths","H","Coordinate geometry: circle","Find the centre and radius of the circle x² + y² − 6x + 4y − 12 = 0.",["Centre (3, −2), radius 5","Centre (−3, 2), radius 5","Centre (3, −2), radius √12","Centre (6, −4), radius 12"],0,
+ "Compare with x² + y² + 2gx + 2fy + c = 0: g = −3, f = 2, c = −12.<br>Centre (−g, −f) = (3, −2). Radius = √(g² + f² − c) = √(9 + 4 + 12) = √25 = 5."],
+["maths","HO","Trigonometry","In triangle ABC, a = 8 cm, angle A = 40° and angle B = 65°. Find b correct to two decimal places.",null,null,
+ "Sine rule: b / sin B = a / sin A.<br>b = 8 × sin 65° / sin 40° = 8 × 0.9063 / 0.6428 = <b>11.28 cm</b>."],
+["maths","H","Trigonometry","Solve cos x = ½ for 0° ≤ x ≤ 360°.",["x = 60° or x = 300°","x = 30° or x = 150°","x = 60° or x = 120°","x = 60° only"],0,
+ "cos 60° = ½. Cosine is positive in the first and fourth quadrants, so x = 60° or x = 360° − 60° = 300°."],
+
+/* ---------------- PHYSICS ---------------- */
+["physics","HO","Forces and motion","A car starts from rest and accelerates uniformly at 2.5 m s⁻² for 8 s. How far does it travel?",["80 m","20 m","160 m","40 m"],0,
+ "s = ut + ½at² = 0 + ½ × 2.5 × 8² = ½ × 2.5 × 64 = 80 m. (Its final speed is 20 m s⁻¹.)"],
+["physics","HO","Forces and motion","A ball is thrown vertically upwards at 14.7 m s⁻¹. Taking g = 9.8 m s⁻², find (a) the time to reach the top and (b) the maximum height.",null,null,
+ "At the top, v = 0.<br>(a) v = u + at → 0 = 14.7 − 9.8t → <b>t = 1.5 s</b>.<br>(b) v² = u² + 2as → 0 = 14.7² − 2(9.8)s → s = 216.09 / 19.6 = <b>11.0 m</b> (11.025 m)."],
+["physics","HO","Forces and motion","What net force is needed to give a 1,200 kg car an acceleration of 1.5 m s⁻²?",["1,800 N","800 N","1,201.5 N","18,000 N"],0,
+ "Newton's second law: F = ma = 1200 × 1.5 = 1,800 N."],
+["physics","HO","Forces and motion","A 2 kg trolley moving at 3 m s⁻¹ collides with a stationary 1 kg trolley and they stick together. What is their common velocity?",["2 m s⁻¹","3 m s⁻¹","1.5 m s⁻¹","6 m s⁻¹"],0,
+ "Conservation of momentum: momentum before = 2 × 3 = 6 kg m s⁻¹.<br>After: (2 + 1)v = 6 → v = 2 m s⁻¹."],
+["physics","HO","Energy","A motor lifts a 50 kg load through a height of 12 m in 20 s. Taking g = 9.8 m s⁻², find the work done and the useful power output.",null,null,
+ "Work done = gain in potential energy = mgh = 50 × 9.8 × 12 = <b>5,880 J</b>.<br>Power = work / time = 5880 / 20 = <b>294 W</b>."],
+["physics","HO","Waves","A sound wave has frequency 500 Hz and wavelength 0.68 m. What is its speed?",["340 m s⁻¹","735 m s⁻¹","0.00136 m s⁻¹","500.68 m s⁻¹"],0,
+ "v = fλ = 500 × 0.68 = 340 m s⁻¹."],
+["physics","O","Waves","Which of these is a longitudinal wave?",["Sound in air","Light","Radio waves","A wave on a stretched string"],0,
+ "In a longitudinal wave the particles vibrate parallel to the direction the wave travels. Sound is a series of compressions and rarefactions, so it is longitudinal. The others are transverse."],
+["physics","H","Waves","Light travels from air into glass of refractive index 1.5 at an angle of incidence of 40°. Find (a) the angle of refraction and (b) the critical angle of the glass.",null,null,
+ "(a) Snell's law: n = sin i / sin r → sin r = sin 40° / 1.5 = 0.6428 / 1.5 = 0.4285 → <b>r ≈ 25.4°</b>.<br>(b) sin C = 1 / n = 1 / 1.5 = 0.667 → <b>C ≈ 41.8°</b>."],
+["physics","HO","Electricity","What is the total resistance of a 6 Ω resistor and a 3 Ω resistor connected in parallel?",["2 Ω","9 Ω","4.5 Ω","0.5 Ω"],0,
+ "1/R = 1/6 + 1/3 = 1/6 + 2/6 = 3/6 = ½, so R = 2 Ω. The total of resistors in parallel is always less than the smallest one."],
+["physics","HO","Electricity","A 12 V battery is connected to a 4 Ω resistor and a 2 Ω resistor in series. Find (a) the current, (b) the voltage across the 4 Ω resistor and (c) the power used by the 2 Ω resistor.",null,null,
+ "(a) Total resistance = 4 + 2 = 6 Ω. I = V / R = 12 / 6 = <b>2 A</b>.<br>(b) V = IR = 2 × 4 = <b>8 V</b>.<br>(c) P = I²R = 2² × 2 = <b>8 W</b>."],
+["physics","H","Electric and magnetic fields","A straight wire 0.5 m long carries a current of 3 A at right angles to a magnetic field of flux density 0.2 T. What force acts on it?",["0.3 N","3.0 N","0.03 N","7.5 N"],0,
+ "F = BIL = 0.2 × 3 × 0.5 = 0.3 N. Its direction is given by Fleming's left-hand rule."],
+["physics","HO","Modern physics","A radioactive source has a half-life of 6 hours. What fraction of it remains after 24 hours?",["1/16","1/4","1/8","1/24"],0,
+ "24 hours is 4 half-lives. Fraction left = (½)⁴ = 1/16."],
+["physics","O","Modern physics","What is an alpha particle?",["A helium nucleus: 2 protons and 2 neutrons","A fast-moving electron","A high-energy photon","A single neutron"],0,
+ "An alpha particle is a helium-4 nucleus. A fast electron is a beta particle, and a high-energy photon is gamma radiation."],
+["physics","H","Modern physics","Calculate the energy of a photon of light of wavelength 500 nm. (h = 6.6 × 10⁻³⁴ J s, c = 3.0 × 10⁸ m s⁻¹)",null,null,
+ "E = hf = hc / λ.<br>λ = 500 nm = 5.0 × 10⁻⁷ m.<br>E = (6.6 × 10⁻³⁴ × 3.0 × 10⁸) / 5.0 × 10⁻⁷ = <b>3.96 × 10⁻¹⁹ J</b> (3.98 × 10⁻¹⁹ J with h = 6.626 × 10⁻³⁴)."],
+["physics","HO","Nature of science","A student investigates how the length of a pendulum affects its period. Which of these should be kept the same throughout?",["The angle it is released from","The length of the string","The period","The time for 20 swings"],0,
+ "Length is the independent variable (changed on purpose) and the period is the dependent variable (measured). For a fair test, other factors such as the release angle (kept small) and the mass of the bob are controlled. Timing 20 swings is how the period is measured."],
+
+/* ---------------- CHEMISTRY ---------------- */
+["chemistry","HO","The mole","How many moles are in 22 g of carbon dioxide, CO₂? (C = 12, O = 16)",["0.5 mol","2 mol","22 mol","0.25 mol"],0,
+ "Mr of CO₂ = 12 + 2(16) = 44. Moles = mass / Mr = 22 / 44 = 0.5 mol."],
+["chemistry","HO","The mole","What mass of sodium hydroxide is needed to make 250 cm³ of a 0.20 M solution? (Na = 23, O = 16, H = 1)",null,null,
+ "Moles needed = volume (L) × concentration = 0.250 × 0.20 = 0.050 mol.<br>Mr of NaOH = 23 + 16 + 1 = 40.<br>Mass = 0.050 × 40 = <b>2.0 g</b>."],
+["chemistry","HO","Volumetric analysis","25.0 cm³ of sodium hydroxide solution is exactly neutralised by 20.0 cm³ of 0.10 M hydrochloric acid. Find the concentration of the sodium hydroxide.",null,null,
+ "NaOH + HCl → NaCl + H₂O (1 : 1).<br>Moles HCl = 0.020 × 0.10 = 0.0020 mol, so moles NaOH = 0.0020 mol.<br>Concentration = 0.0020 / 0.025 = <b>0.080 M</b>.<br>Or use (V × M / n) acid = (V × M / n) base: 20.0 × 0.10 / 1 = 25.0 × M / 1 → M = 0.080."],
+["chemistry","HO","Acids and bases","What is the pH of 0.01 M hydrochloric acid?",["2","1","0.01","12"],0,
+ "HCl is a strong acid, fully dissociated, so [H⁺] = 0.01 = 10⁻² M. pH = −log₁₀[H⁺] = 2."],
+["chemistry","H","Acids and bases","What is the pH of 0.001 M sodium hydroxide solution at 25 °C?",["11","3","10","14"],0,
+ "NaOH is a strong base, so [OH⁻] = 10⁻³ M and pOH = 3. pH = 14 − pOH = 11."],
+["chemistry","HO","Atomic structure","Which is the electron configuration of a sodium atom (atomic number 11)?",["1s² 2s² 2p⁶ 3s¹","1s² 2s² 2p⁷","1s² 2s² 2p⁶ 3p¹","1s² 2s⁸ 3s¹"],0,
+ "Fill sub-levels in order: 1s holds 2, 2s holds 2, 2p holds 6, leaving 1 electron in 3s."],
+["chemistry","HO","Periodic table","Which element has the highest electronegativity?",["Fluorine","Oxygen","Chlorine","Caesium"],0,
+ "Electronegativity increases across a period and decreases down a group, so fluorine (top right, excluding noble gases) is the most electronegative element, with a value of 4.0."],
+["chemistry","O","Chemical bonding","Which of these compounds has ionic bonding?",["Sodium chloride, NaCl","Methane, CH₄","Water, H₂O","Carbon dioxide, CO₂"],0,
+ "Ionic bonds form between a metal and a non-metal through transfer of electrons (Na⁺ and Cl⁻). The other three are covalent compounds of non-metals."],
+["chemistry","H","Chemical bonding","What is the shape of an ammonia (NH₃) molecule?",["Pyramidal","Linear","Tetrahedral","Planar triangular"],0,
+ "Nitrogen has three bond pairs and one lone pair. The four electron pairs repel to a roughly tetrahedral arrangement, but only the atoms define the shape, which is pyramidal (bond angle about 107°)."],
+["chemistry","H","Chemical equilibrium","N₂ + 3H₂ ⇌ 2NH₃ is exothermic in the forward direction. State and explain the effect on the yield of ammonia of (a) increasing the pressure and (b) increasing the temperature.",null,null,
+ "Le Chatelier's principle: a system at equilibrium opposes any change imposed on it.<br>(a) Higher pressure: the equilibrium shifts towards fewer gas molecules (4 on the left, 2 on the right), so the <b>yield increases</b>.<br>(b) Higher temperature: the system opposes the change by favouring the endothermic (reverse) reaction, so the <b>yield decreases</b>. The rate still increases, which is why industry uses a compromise temperature."],
+["chemistry","HO","Rates of reaction","How does a catalyst increase the rate of a reaction?",["It provides an alternative pathway with a lower activation energy","It increases the temperature of the reaction","It shifts the equilibrium to the right","It is used up and adds energy to the particles"],0,
+ "A catalyst offers a different reaction route with a lower activation energy, so more collisions have enough energy to react. It is not used up and does not change the position of equilibrium."],
+["chemistry","O","Organic chemistry","Which functional group does ethanoic acid contain?",["Carboxyl, −COOH","Hydroxyl, −OH","Carbonyl in an aldehyde, −CHO","Ester, −COO−"],0,
+ "Ethanoic acid, CH₃COOH, is a carboxylic acid. Its functional group is the carboxyl group, −COOH."],
+["chemistry","H","Oxidation and reduction","What is the oxidation number of manganese in potassium permanganate, KMnO₄?",["+7","+5","+4","−1"],0,
+ "K is +1 and each O is −2. The compound is neutral: (+1) + Mn + 4(−2) = 0 → Mn = +7."],
+["chemistry","HO","The mole","A compound contains 40.0% carbon, 6.7% hydrogen and 53.3% oxygen by mass. Find its empirical formula. (C = 12, H = 1, O = 16)",null,null,
+ "Take 100 g: C 40.0 / 12 = 3.33 mol; H 6.7 / 1 = 6.7 mol; O 53.3 / 16 = 3.33 mol.<br>Divide by the smallest (3.33): C 1, H 2, O 1.<br><b>Empirical formula: CH₂O</b>."],
+["chemistry","O","Organic chemistry","What is the general formula of the alkanes?",["CₙH₂ₙ₊₂","CₙH₂ₙ","CₙH₂ₙ₋₂","CₙH₂ₙ₊₁OH"],0,
+ "Alkanes are saturated hydrocarbons, e.g. methane CH₄ (n = 1) and propane C₃H₈ (n = 3). CₙH₂ₙ is the alkenes."],
+
+/* ---------------- BIOLOGY ---------------- */
+["biology","O","The cell","In which organelle does most aerobic respiration take place?",["Mitochondrion","Ribosome","Chloroplast","Nucleus"],0,
+ "Stage 1 (glycolysis) happens in the cytoplasm, but stage 2 (the Krebs cycle and electron transport chain), which releases most of the energy, happens in the mitochondria."],
+["biology","HO","Enzymes","What happens when an enzyme is denatured by high temperature?",["The shape of its active site changes permanently","It works faster than before","It is broken down into glucose","It becomes a substrate"],0,
+ "Heat breaks the bonds that hold the enzyme's 3-D shape. The active site no longer fits the substrate, so the enzyme stops working, and the change is permanent."],
+["biology","HO","Photosynthesis","Write the balanced equation for photosynthesis and outline the two stages.",null,null,
+ "<b>6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂</b> (using light energy absorbed by chlorophyll).<br><b>Light stage</b> (in the grana of the chloroplast): light energy splits water, releasing oxygen, and produces ATP and NADPH.<br><b>Dark stage</b> (light-independent, in the stroma): ATP and NADPH are used to reduce carbon dioxide to glucose."],
+["biology","H","DNA and genetics","In a sample of double-stranded DNA, 30% of the bases are adenine. What percentage are guanine?",["20%","30%","40%","70%"],0,
+ "Adenine pairs with thymine, so T = 30% too, making 60%. The remaining 40% is split equally between guanine and cytosine: 20% each."],
+["biology","HO","DNA and genetics","In pea plants, tall (T) is dominant to short (t). Two heterozygous tall plants are crossed. Give the expected genotypes and phenotypes of the offspring, with ratios.",null,null,
+ "Parents: Tt × Tt. Gametes: T, t from each.<br>Punnett square gives TT, Tt, Tt, tt.<br><b>Genotypes: 1 TT : 2 Tt : 1 tt</b>.<br><b>Phenotypes: 3 tall : 1 short</b>."],
+["biology","O","Cell division","Meiosis of one cell produces…",["Four haploid cells","Two diploid cells","Four diploid cells","Two haploid cells"],0,
+ "Meiosis has two divisions and halves the chromosome number, giving four genetically different haploid cells (gametes in animals). Mitosis gives two identical diploid cells."],
+["biology","HO","Human circulation","Which blood vessel carries oxygenated blood from the lungs to the heart?",["Pulmonary vein","Pulmonary artery","Aorta","Vena cava"],0,
+ "The pulmonary vein is the only vein that carries oxygenated blood. It returns blood from the lungs to the left atrium."],
+["biology","O","Human excretion","What is the functional unit of the kidney?",["The nephron","The ureter","The alveolus","The neuron"],0,
+ "Each kidney contains about a million nephrons, where blood is filtered and useful substances are reabsorbed."],
+["biology","O","Ecology","What name is given to an organism that feeds on dead organic matter and breaks it down?",["Decomposer","Primary consumer","Producer","Parasite"],0,
+ "Decomposers (many bacteria and fungi) break down dead matter and return nutrients to the soil, which is vital for nutrient recycling."],
+["biology","HO","Ecology","Explain why food chains rarely have more than four or five links.",null,null,
+ "Only about <b>10%</b> of the energy at one trophic level is passed to the next. The rest is lost as heat in respiration, in movement, and in parts that are not eaten or digested.<br>After four or five transfers there is too little energy left to support another population of organisms."],
+["biology","H","Human defence system","Which cells produce antibodies?",["B lymphocytes","T helper cells","Red blood cells","Platelets"],0,
+ "B lymphocytes, once activated, divide into plasma cells that secrete antibodies specific to an antigen. T cells help coordinate the response or kill infected cells directly."],
+["biology","O","Movement through cell membranes","Which statement describes osmosis?",["Movement of water across a semi-permeable membrane from a high to a low water concentration","Movement of any molecule from a low to a high concentration using energy","Movement of solute molecules through a fully permeable membrane","Movement of gases into the alveoli"],0,
+ "Osmosis is the diffusion of water through a semi-permeable membrane, from a region of high water concentration (dilute solution) to low water concentration (concentrated solution). It needs no energy."],
+["biology","HO","Human digestion","Which of these is NOT a function of the liver?",["Producing insulin","Making bile","Breaking down excess amino acids (deamination)","Storing glycogen"],0,
+ "Insulin is made by the islets of Langerhans in the pancreas. The liver makes bile, deaminates amino acids and stores glycogen, among many other jobs."],
+["biology","HO","Enzymes","You investigate the effect of temperature on the activity of an enzyme. Name the dependent variable, explain how you would keep the pH constant, and describe a suitable control.",null,null,
+ "<b>Dependent variable</b>: the rate of the reaction, e.g. volume of oxygen produced per minute by catalase, or time for starch to disappear with amylase.<br><b>Constant pH</b>: add the same volume of the same buffer solution to every test tube.<br><b>Control</b>: repeat with a boiled (denatured) enzyme sample. No reaction shows that the enzyme causes the change."],
+
+/* ---------------- ENGLISH ---------------- */
+["english","H","Exam technique","At Higher Level, how many of the 200 marks on Paper 1 are for the Composing section?",["100","50","150","70"],0,
+ "Paper 1 has Comprehending (Question A 50 marks + Question B 50 marks) and Composing (100 marks). The composition is half the paper, so plan time for it."],
+["english","HO","Exam technique","What does PCLM stand for in the marking of English answers?",["Purpose, Coherence, Language, Mechanics","Planning, Content, Layout, Marks","Point, Context, Link, Meaning","Purpose, Clarity, Length, Mechanics"],0,
+ "Answers are assessed for Purpose (answering the question, 30%), Coherence of delivery (30%), Efficiency of language use (30%) and accuracy of Mechanics, such as spelling and grammar (10%)."],
+["english","HO","Exam technique","In the Comprehending section of Paper 1, which rule applies to Questions A and B?",["You must answer Question A and Question B on different texts","You must answer both questions on the same text","You only answer Question A","Question B is optional"],0,
+ "You answer a Question A on one text and a Question B on a different text. Answering both on the same text costs you a whole question."],
+["english","HO","Language techniques","\"Ask yourself: how much longer can we afford to wait?\" Which technique is used here?",["Rhetorical question","Alliteration","Simile","Onomatopoeia"],0,
+ "A rhetorical question is asked for effect, not for an answer. It draws the reader in and pushes them towards the speaker's view."],
+["english","HO","Language techniques","\"We will not wait. We will not stay silent. We will not give up.\" Name the technique.",["Anaphora (repetition at the start of each sentence)","Oxymoron","Personification","Hyperbole"],0,
+ "Repeating the same opening words in successive sentences is anaphora. It builds rhythm and determination, and is common in persuasive speeches."],
+["english","HO","Question B","Write the opening (about 150 words) of a speech to your school's student council arguing that phones should be allowed at lunchtime.",null,null,
+ "<b>What a strong opening does</b>:<br>• Addresses the audience directly: \"Members of the student council…\"<br>• States the position clearly in the first few lines.<br>• Opens with a hook: a short anecdote, a striking figure or a rhetorical question.<br>• Previews two or three reasons, such as safety, organising sport and clubs, and learning to self-regulate.<br>• Keeps the register formal but warm.<br><b>Sample first line</b>: \"Every lunchtime, three hundred students walk past a sign telling them they cannot be trusted. Today I want to ask whether that sign still makes sense.\""],
+["english","HO","Unseen poetry","Read this original poem and answer: what mood does the poet create, and how?<br><br><i>The bus pulls out at ten past eight,<br>its windows grey with breath.<br>I write my name in the mist and watch<br>the letters slowly bleed.<br>Out past the shut-up shops, the fields<br>lie flat and wet and wide.<br>I know each gate, each leaning post,<br>and none of them know me.</i>",null,null,
+ "<b>Mood</b>: lonely, restless and a little melancholy.<br><b>How</b>:<br>• Grey, damp imagery (\"windows grey with breath\", fields \"flat and wet and wide\") creates a dull, heavy atmosphere.<br>• The name in the mist that \"slowly bleed[s]\" suggests the speaker's identity fading, a striking verb choice.<br>• The final line reverses the expected closeness: the speaker knows every gate but feels unknown. This captures a sense of not belonging.<br>• Simple, regular lines echo the routine of the daily journey.<br>Aim for 2–3 points, each backed by a short quotation and its effect."],
+["english","H","Comparative study","How many texts does a Higher Level student study for the Comparative Study?",["Three","Two","Four","One"],0,
+ "Higher Level students compare three texts under the comparative modes set for that year. Keep a short bank of key moments from each text that work across the modes."],
+["english","HO","Single text","Which structure works best for each paragraph of a single-text essay?",["Make a point, support it with a short quotation or reference, then explain its significance","Retell the plot in order","List as many quotations as possible","Give your opinion without evidence"],0,
+ "Examiners reward analysis, not summary. A focused point, apt evidence and a clear explanation that links back to the question is the basic building block of a high-grade answer."],
+["english","O","Functional writing","Which is the most suitable opening for a formal letter of complaint?",["Dear Sir or Madam, I am writing to complain about…","Hey there, guess what happened…","To whoever, you won't believe this…","Hi! Just a quick note…"],0,
+ "Formal letters use a formal greeting and get straight to the purpose. If you begin with \"Dear Sir or Madam\", end with \"Yours faithfully\"."],
+["english","HO","Composing","Improve this paragraph from a personal essay: \"I was nervous. It was the first day. The school was big. I didn't know anyone. It was scary.\"",null,null,
+ "<b>Problems</b>: five short sentences in the same pattern, telling rather than showing, and vague words like \"big\" and \"scary\".<br><b>One improved version</b>: \"The front doors swung shut behind me with a sound like a sigh. Hundreds of strangers streamed past, all of them certain of where they were going, while I stood clutching a timetable that might as well have been written in code.\"<br>Vary sentence length, use concrete detail and let the reader feel the nerves."],
+
+/* ---------------- IRISH ---------------- */
+["irish","HO","An scrúdú","How much of the Leaving Cert Irish exam is the oral (an scrúdú cainte) worth?",["40%","25%","10%","50%"],0,
+ "The oral is worth 40% of the total marks (240 of 600). That makes it the single biggest component, so regular speaking practice pays off."],
+["irish","HO","Gramadach: na briathra","Which is the Aimsir Chaite (past tense) of \"téigh\" (go)?",["Chuaigh mé","Théigh mé","Rachaidh mé","Téim"],0,
+ "Téigh is an irregular verb. Past: chuaigh mé (I went). Future: rachaidh mé. Present: téim."],
+["irish","HO","Gramadach: na briathra","Which is the Aimsir Chaite of \"feic\" (see)?",["Chonaic mé","D'fheic mé","Feicfidh mé","Chífinn"],0,
+ "Feic is irregular. Past: chonaic mé (I saw). Its negative is \"ní fhaca mé\" and question form \"an bhfaca tú?\"."],
+["irish","H","Gramadach: na briathra","How do you say \"I would go\" in the Modh Coinníollach (conditional mood)?",["Rachainn","Chuaigh mé","Rachaidh mé","Théinn"],0,
+ "The conditional of téigh is rachainn (I would go), rachfá (you would go), rachadh sé (he would go). It is very useful in the oral and in essays: \"Dá mbeadh an t-airgead agam, rachainn go dtí an Astráil.\""],
+["irish","HO","Gramadach: tuisil","What happens to \"bord\" after \"ar an\" in the standard (Caighdeán)?",["ar an mbord (urú)","ar an bhord (séimhiú)","ar an bord (no change)","ar an t-bord"],0,
+ "In the Caighdeán, a singular noun after a simple preposition + an takes urú (eclipsis): ar an mbord, ag an bhfuinneog. (After den, don and sa it takes séimhiú instead.) Some dialects use séimhiú here too."],
+["irish","HO","Gramadach: tuisil","Which is correct?",["sa bhaile","sa baile","sa mbaile","san baile"],0,
+ "\"Sa\" (in the) causes séimhiú on a consonant: sa bhaile, sa chistin. Before a vowel it becomes \"san\": san oíche."],
+["irish","H","Gramadach: tuisil","What does \"doras an tí\" mean?",["The door of the house","The house door is open","The house at the door","Open the door"],0,
+ "\"Tí\" is the tuiseal ginideach (genitive) of \"teach\" after \"an\": an teach (the house) → doras an tí (the door of the house)."],
+["irish","O","Foclóir","What does \"Is maith liom\" mean?",["I like","I am good","I have","It is good for me"],0,
+ "\"Is maith liom spórt\" = I like sport. Stronger forms: \"Is breá liom\" (I love) and \"Is aoibhinn liom\" (I adore)."],
+["irish","HO","Gramadach: uimhreacha","Which is correct for \"three boxes\"?",["trí bhosca","trí bosca","trí mbosca","trí boscaí"],0,
+ "The numbers 2–6 (dhá, trí, ceithre, cúig, sé) take séimhiú and a singular noun: trí bhosca, cúig chapall. Numbers 7–10 take urú: seacht mbosca."],
+["irish","HO","An scrúdú cainte","Prepare four sentences for the oral on \"Mé féin\" (myself), with translations.",null,null,
+ "<b>Is mise Aoife Ní Bhriain.</b> — My name is Aoife O'Brien.<br><b>Tá mé ocht mbliana déag d'aois.</b> — I am eighteen years old.<br><b>Tá mé i mo chónaí i mBaile Átha Cliath.</b> — I live in Dublin. (Note the urú after \"i\".)<br><b>Is breá liom spórt, go háirithe peil Ghaelach.</b> — I love sport, especially Gaelic football.<br>Tip: give the examiner something to follow up on in each answer, and practise with a timer so it sounds natural, not learned off."],
+["irish","HO","Ceapadóireacht","Give four useful linking phrases (nathanna cainte) for an Irish essay, with meanings.",null,null,
+ "<b>Ar an gcéad dul síos</b> — First of all<br><b>Ina theannta sin</b> — In addition to that<br><b>Ar an lámh eile</b> — On the other hand<br><b>Mar fhocal scoir</b> — In conclusion<br>Learn a small set well and use them accurately rather than forcing in many."],
+["irish","O","An scrúdú","What is \"léamhthuiscint\"?",["Reading comprehension","Listening comprehension","Prose","Composition"],0,
+ "Léamhthuiscint = reading comprehension (Paper 2). Cluastuiscint is the listening (aural) test, ceapadóireacht is composition, and prós is prose."],
+
+/* ---------------- COMPUTER SCIENCE ---------------- */
+["cs","HO","Data representation","What is the binary number 10110110 in denary (decimal)?",["182","118","214","150"],0,
+ "Place values: 128 64 32 16 8 4 2 1. The 1s are at 128 + 32 + 16 + 4 + 2 = 182."],
+["cs","HO","Data representation","What is 182 in hexadecimal?",["B6","A6","6B","C2"],0,
+ "Split 10110110 into nibbles: 1011 = 11 = B, 0110 = 6. So 182 = B6."],
+["cs","HO","Python","What does this program print?<pre>x = 5\nfor i in range(3):\n    x = x + i\nprint(x)</pre>",["8","5","11","14"],0,
+ "range(3) gives 0, 1, 2. x becomes 5 + 0 = 5, then 6, then 8. The loop body runs three times and the program prints 8."],
+["cs","HO","Python","What does this print?<pre>nums = [4, 8, 15, 16, 23, 42]\nprint(nums[1:4])</pre>",["[8, 15, 16]","[4, 8, 15, 16]","[8, 15, 16, 23]","[15, 16, 23]"],0,
+ "Slicing starts at index 1 (the second item, 8) and stops before index 4, giving the items at indexes 1, 2 and 3."],
+["cs","HO","Python","What does len(\"Leaving Cert\") return?",["12","11","2","10"],0,
+ "len counts every character, including the space: \"Leaving\" is 7, the space is 1, \"Cert\" is 4, giving 12."],
+["cs","H","Algorithms","What is the worst-case time complexity of binary search on a sorted list of n items?",["O(log n)","O(n)","O(n²)","O(1)"],0,
+ "Each comparison halves the part of the list still to search, so at most about log₂ n comparisons are needed. Linear search is O(n)."],
+["cs","HO","Algorithms","Show the list [5, 1, 4, 2, 8] after the first pass of a bubble sort into ascending order.",["[1, 4, 2, 5, 8]","[1, 2, 4, 5, 8]","[1, 5, 4, 2, 8]","[5, 1, 4, 2, 8]"],0,
+ "Compare neighbours and swap if out of order: (5,1) swap → [1,5,4,2,8]; (5,4) swap → [1,4,5,2,8]; (5,2) swap → [1,4,2,5,8]; (5,8) no swap. The largest value has bubbled to the end."],
+["cs","HO","Python","Write a Python function largest(items) that returns the largest number in a non-empty list without using max().",null,null,
+ "<pre>def largest(items):\n    biggest = items[0]\n    for value in items[1:]:\n        if value > biggest:\n            biggest = value\n    return biggest\n\nprint(largest([3, 17, 9, 4]))   # 17</pre>Start with the first item, not 0, so the function also works for lists of negative numbers."],
+["cs","HO","Computer systems","What is the output of NOT (A AND B) when A = 1 and B = 1?",["0","1","2","It depends on the clock"],0,
+ "A AND B = 1, and NOT 1 = 0. This combination is a NAND gate, which outputs 0 only when both inputs are 1."],
+["cs","O","Abstraction","Which best describes abstraction?",["Removing unnecessary detail to focus on what matters for the problem","Making code run faster","Writing code in a low-level language","Storing data in binary"],0,
+ "A map of the bus network leaves out buildings and street names. It keeps only what a passenger needs, which is a classic example of abstraction."],
+["cs","H","Data representation","What is the smallest number of bits needed to give a unique code to 300 different items?",["9","8","10","300"],0,
+ "8 bits give 2⁸ = 256 codes, which is not enough. 9 bits give 2⁹ = 512 codes, which is enough for 300."],
+["cs","HO","Evaluation and testing","A function accepts ages from 12 to 18 inclusive. Choose test data to check the boundaries, and say what each should return.",null,null,
+ "Test either side of each boundary:<br>• <b>11</b>: rejected (just below)<br>• <b>12</b>: accepted (lower boundary)<br>• <b>18</b>: accepted (upper boundary)<br>• <b>19</b>: rejected (just above)<br>Add a typical value (15, accepted) and invalid input such as \"abc\" or −1 to check error handling."],
+["cs","O","Computer systems","Which protocol encrypts traffic between a web browser and a website?",["HTTPS","HTTP","FTP","SMTP"],0,
+ "HTTPS is HTTP sent over TLS encryption, shown by the padlock in the browser. Plain HTTP sends data unencrypted."],
+
+/* ---------------- APPLIED MATHS ---------------- */
+["applied","HO","Kinematics","A particle starts from rest and moves with uniform acceleration. It travels 45 m in the first 3 s. Find its acceleration.",["10 m s⁻²","15 m s⁻²","5 m s⁻²","30 m s⁻²"],0,
+ "s = ut + ½at² with u = 0: 45 = ½a(3)² = 4.5a → a = 10 m s⁻²."],
+["applied","H","Kinematics","A particle is projected with speed 20 m s⁻¹ at 30° to the horizontal ground. Taking g = 9.8 m s⁻², find the time of flight, the range and the maximum height.",null,null,
+ "Components: horizontal 20 cos 30° = 17.32 m s⁻¹, vertical 20 sin 30° = 10 m s⁻¹.<br><b>Time of flight</b>: vertical displacement 0 = 10t − 4.9t² → t = 10 / 4.9 = <b>2.04 s</b>.<br><b>Range</b> = 17.32 × 2.041 = <b>35.3 m</b>.<br><b>Maximum height</b>: 0 = 10² − 2(9.8)h → h = 100 / 19.6 = <b>5.10 m</b>."],
+["applied","H","Dynamics","Masses of 3 kg and 5 kg hang at the ends of a light string over a smooth fixed pulley. Taking g = 9.8 m s⁻², what is the acceleration of the system?",["2.45 m s⁻²","9.8 m s⁻²","1.96 m s⁻²","4.9 m s⁻²"],0,
+ "5g − T = 5a and T − 3g = 3a. Adding: 2g = 8a → a = 2g / 8 = 2.45 m s⁻²."],
+["applied","HO","Collisions","The coefficient of restitution e in a direct collision is defined as…",["speed of separation ÷ speed of approach","speed of approach ÷ speed of separation","momentum after ÷ momentum before","kinetic energy after ÷ kinetic energy before"],0,
+ "Newton's experimental law: e = (speed of separation) / (speed of approach), with 0 ≤ e ≤ 1. e = 1 is perfectly elastic and e = 0 means the bodies coalesce."],
+["applied","H","Collisions","Sphere A, mass 2 kg, moving at 5 m s⁻¹, hits sphere B, mass 3 kg, at rest. The coefficient of restitution is 0.5. Find the velocities after impact.",null,null,
+ "<b>Momentum</b>: 2(5) + 3(0) = 2v₁ + 3v₂ → 2v₁ + 3v₂ = 10.<br><b>Newton's law</b>: v₂ − v₁ = 0.5(5 − 0) = 2.5.<br>Substitute v₂ = v₁ + 2.5: 2v₁ + 3v₁ + 7.5 = 10 → v₁ = 0.5.<br><b>A: 0.5 m s⁻¹, B: 3 m s⁻¹</b>, both in the original direction of A."],
+["applied","HO","Networks and graphs","Weighted network: A–B 4, A–C 2, C–B 1, B–D 5, C–D 8, D–E 3, B–E 10. What is the shortest path length from A to E?",["11, via A–C–B–D–E","12, via A–B–D–E","13, via A–C–D–E","13, via A–C–B–E"],0,
+ "Dijkstra's algorithm: A = 0; C = 2; B = min(4, 2 + 1) = 3; D = min(3 + 5, 2 + 8) = 8; E = min(8 + 3, 3 + 10) = 11.<br>Shortest path A–C–B–D–E with length 11."],
+["applied","HO","Networks and graphs","Use Kruskal's algorithm to find a minimum spanning tree for: AB 7, AC 5, BC 3, BD 6, CD 4, DE 2, CE 8. Give its total weight.",null,null,
+ "Sort edges by weight and add each one unless it makes a cycle:<br>DE 2 ✓, BC 3 ✓, CD 4 ✓, AC 5 ✓ (A now joined), BD 6 ✗ (cycle B–C–D), AB 7 ✗, CE 8 ✗.<br><b>Tree: DE, BC, CD, AC. Total weight = 2 + 3 + 4 + 5 = 14</b>.<br>A tree on 5 vertices always has 4 edges, which is a quick check."],
+["applied","HO","Modelling a changing world","A savings model is uₙ₊₁ = 1.05uₙ with u₀ = 200. Find u₃, to one decimal place.",["231.5","215.0","230.0","210.0"],0,
+ "u₁ = 210, u₂ = 220.5, u₃ = 231.525 ≈ 231.5. In general uₙ = 200(1.05)ⁿ."],
+["applied","H","Modelling a changing world","A fish population is modelled by Pₙ₊₁ = 1.2Pₙ − 50, where 50 fish are removed each year, and P₀ = 300. Find P₁, P₂ and P₃, and find the equilibrium population.",null,null,
+ "P₁ = 1.2(300) − 50 = 310; P₂ = 1.2(310) − 50 = 322; P₃ = 1.2(322) − 50 = <b>336.4</b>.<br><b>Equilibrium</b>: P = 1.2P − 50 → 0.2P = 50 → <b>P = 250</b>.<br>Since P₀ = 300 is above 250, the population keeps growing. Starting below 250, it would decline to zero."],
+["applied","HO","Relative motion","Ship A sails due east at 12 km/h and ship B sails due north at 5 km/h. What is the speed of A relative to B?",["13 km/h","17 km/h","7 km/h","√119 km/h"],0,
+ "v(A relative to B) = v(A) − v(B) = 12 east + 5 south. Its magnitude is √(12² + 5²) = √169 = 13 km/h."],
+["applied","H","Networks and graphs","A connected graph has an Eulerian circuit (a closed route using every edge exactly once) when…",["every vertex has even degree","exactly two vertices have odd degree","every vertex has odd degree","it has no cycles"],0,
+ "Each time the route passes through a vertex it uses two edges, so every degree must be even. With exactly two odd vertices there is an Eulerian path (not a circuit) between them."],
+["applied","O","Mathematical modelling","What is the first stage of the mathematical modelling cycle?",["Define the problem and state the assumptions","Report the conclusions","Solve the equations","Compare the results with reality"],0,
+ "The cycle runs: define the problem and assumptions → formulate the mathematical model → solve it → interpret and evaluate the results against reality → refine and report. The modelling project is assessed on all of these stages."]
+];
+
+</script>
+<script>
+(function(){
+"use strict";
+/* ---------- data ---------- */
+const SUBJECTS = [
+  {id:"maths", name:"Mathematics", code:"LC Maths", exam:"Two written papers. Higher, Ordinary and Foundation levels. 25 bonus CAO points for H6 or above at Higher."},
+  {id:"english", name:"English", code:"LC English", exam:"Paper 1: Comprehending and Composing. Paper 2: Literature. 200 marks each at Higher."},
+  {id:"irish", name:"Gaeilge", code:"LC Irish", exam:"Oral exam 40%. Written papers, including the listening test, 60%."},
+  {id:"physics", name:"Physics", code:"New spec 2025", exam:"New specification, first examined June 2027. Written exam 60%, additional assessment component 40%."},
+  {id:"chemistry", name:"Chemistry", code:"New spec 2025", exam:"New specification, first examined June 2027. Written exam 60%, additional assessment component 40%."},
+  {id:"biology", name:"Biology", code:"New spec 2025", exam:"New specification, first examined June 2027. Written exam 60%, additional assessment component 40%."},
+  {id:"cs", name:"Computer Science", code:"LC CS", exam:"End-of-course exam 70%, written and computer-based in Python. Coursework project 30%."},
+  {id:"applied", name:"Applied Maths", code:"LC Applied Maths", exam:"Written exam 80%. Modelling project 20%."}
+];
+const SUBJ = Object.fromEntries(SUBJECTS.map(s=>[s.id,s]));
+const counters = {};
+const QUESTIONS = QUESTION_ROWS.map(r=>{
+  counters[r[0]] = (counters[r[0]]||0)+1;
+  return {id:r[0]+"-"+counters[r[0]], s:r[0], lv:r[1], t:r[2], q:r[3], opts:r[4], a:r[5], sol:r[6]};
+});
+const byId = Object.fromEntries(QUESTIONS.map(q=>[q.id,q]));
+
+/* stable per-question option shuffle (so the right answer isn't always first) */
+function hash(str){ let h=2166136261; for(const c of str){ h^=c.charCodeAt(0); h=Math.imul(h,16777619); } return h>>>0; }
+function order(q){
+  const idx=q.opts.map((_,i)=>i); let seed=hash(q.id);
+  for(let i=idx.length-1;i>0;i--){ seed=(Math.imul(seed,1664525)+1013904223)>>>0; const j=seed%(i+1); [idx[i],idx[j]]=[idx[j],idx[i]]; }
+  return idx;
+}
+
+/* ---------- saved progress (this browser only) ---------- */
+const KEY="ardteist-progress-v1";
+let store = {};
+try{ store = JSON.parse(localStorage.getItem(KEY)||"{}")||{}; }catch(e){ store={}; }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(store)); }catch(e){} }
+function rec(id){ return store[id] || (store[id]={}); }
+function setResult(id,r){ rec(id).r=r; save(); }
+function toggleBm(id){ const x=rec(id); x.bm=!x.bm; save(); return x.bm; }
+
+/* ---------- helpers ---------- */
+const $ = (s,el=document)=>el.querySelector(s);
+const esc = s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const levelName = lv => lv==="H"?"Higher":lv==="O"?"Ordinary":"Higher & Ordinary";
+const matchesLevel = (q,lv)=> lv==="all" || q.lv.includes(lv);
+function statsFor(sid){
+  const qs=QUESTIONS.filter(q=>q.s===sid); let done=0,right=0,partly=0,wrong=0;
+  qs.forEach(q=>{ const r=store[q.id]&&store[q.id].r; if(r){done++; if(r==="right")right++; else if(r==="partly")partly++; else wrong++;} });
+  return {total:qs.length, done, right, partly, wrong};
+}
+const BM_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z" fill="currentColor"/></svg>';
+
+/* ---------- question card ---------- */
+function questionCard(q, opts={}){
+  const el=document.createElement("article");
+  el.className="qcard"+(opts.feature?" feature":"");
+  const r = store[q.id]&&store[q.id].r;
+  const statusChip = r==="right"?'<span class="chip good">Got it</span>':r==="partly"?'<span class="chip warn">Partly</span>':r==="wrong"?'<span class="chip bad">Needs work</span>':"";
+  el.innerHTML = `
+    <div class="qmeta">
+      ${opts.showSubject?`<span class="chip sea">${esc(SUBJ[q.s].name)}</span>`:""}
+      <span class="chip">${esc(q.t)}</span>
+      <span class="chip">${levelName(q.lv)}</span>
+      ${q.opts?"":'<span class="chip">Written answer</span>'}
+      <span class="st">${statusChip}</span>
+      ${opts.noBookmark?"":`<button class="bm" type="button" aria-pressed="${!!(store[q.id]&&store[q.id].bm)}" title="Bookmark this question">${BM_ICON}<span>Bookmark</span></button>`}
+    </div>
+    <div class="qtext">${q.q}</div>
+    <div class="body"></div>`;
+  const body=$(".body",el);
+  const bm=$(".bm",el);
+  if(bm) bm.addEventListener("click",()=>{ bm.setAttribute("aria-pressed", toggleBm(q.id)); if(opts.onChange) opts.onChange(); });
+  const refreshStatus=()=>{ const rr=store[q.id]&&store[q.id].r; $(".st",el).innerHTML = rr==="right"?'<span class="chip good">Got it</span>':rr==="partly"?'<span class="chip warn">Partly</span>':rr==="wrong"?'<span class="chip bad">Needs work</span>':""; };
+
+  if(q.opts){
+    const ord=order(q); let chosen=null;
+    body.innerHTML = `<div class="opts" role="group" aria-label="Answer options">${ord.map((oi,k)=>`<button type="button" class="opt" data-i="${oi}"><span class="k">${"ABCD"[k]}</span><span>${esc(q.opts[oi])}</span></button>`).join("")}</div>
+      <div class="qactions"><button type="button" class="btn small check" disabled>Check answer</button><span class="verdict" aria-live="polite"></span></div>
+      <div class="solbox"></div>`;
+    const buttons=[...body.querySelectorAll(".opt")], check=$(".check",body);
+    buttons.forEach(b=>b.addEventListener("click",()=>{ buttons.forEach(x=>x.classList.remove("sel")); b.classList.add("sel"); chosen=+b.dataset.i; check.disabled=false; }));
+    check.addEventListener("click",()=>{
+      const ok = chosen===q.a;
+      buttons.forEach(b=>{ b.disabled=true; b.classList.remove("sel"); const i=+b.dataset.i; if(i===q.a) b.classList.add("right"); else if(i===chosen) b.classList.add("wrong"); });
+      check.hidden=true;
+      const v=$(".verdict",body); v.textContent = ok?"Correct.":"Not quite. The right answer is highlighted."; v.className="verdict "+(ok?"ok":"no");
+      $(".solbox",body).innerHTML = `<div class="sol"><div class="h">Worked solution</div>${q.sol}</div>`;
+      if(!opts.mock) setResult(q.id, ok?"right":"wrong");
+      refreshStatus();
+      if(opts.onAnswer) opts.onAnswer(ok?"right":"wrong");
+      if(opts.onChange) opts.onChange();
+    });
+  } else {
+    body.innerHTML = `<p style="color:var(--muted);font-size:14.5px">Work it out on paper first, then compare with the solution.</p>
+      <div class="qactions"><button type="button" class="btn small ghost reveal">Show solution</button></div>
+      <div class="solbox"></div>`;
+    $(".reveal",body).addEventListener("click",e=>{
+      e.target.hidden=true;
+      const cur = store[q.id]&&store[q.id].r;
+      $(".solbox",body).innerHTML = `<div class="sol"><div class="h">Worked solution</div>${q.sol}</div>
+        <div class="rate" style="margin-top:12px"><span>How did you do?</span>
+          <button type="button" data-r="right" aria-pressed="${cur==="right"}">Got it</button>
+          <button type="button" data-r="partly" aria-pressed="${cur==="partly"}">Partly</button>
+          <button type="button" data-r="wrong" aria-pressed="${cur==="wrong"}">Missed it</button></div>`;
+      body.querySelectorAll(".rate button").forEach(b=>b.addEventListener("click",()=>{
+        body.querySelectorAll(".rate button").forEach(x=>x.setAttribute("aria-pressed", x===b));
+        if(!opts.mock) setResult(q.id,b.dataset.r);
+        refreshStatus();
+        if(opts.onAnswer) opts.onAnswer(b.dataset.r);
+        if(opts.onChange) opts.onChange();
+      }));
+    });
+  }
+  return el;
+}
+
+/* ---------- views ---------- */
+const app = $("#app");
+function subjectCard(s){
+  const st=statsFor(s.id), pct = st.total? Math.round(st.done/st.total*100):0;
+  return `<a class="subj" href="#${s.id}">
+    <span class="code">${esc(s.code)}</span>
+    <h3>${esc(s.name)}</h3>
+    <p class="exam">${esc(s.exam)}</p>
+    <div><div class="foot"><span>${st.total} questions</span><span>${st.done ? pct+"% tried" : "Not started"}</span></div>
+    <div class="bar"><span style="width:${pct}%"></span></div></div>
+  </a>`;
+}
+
+function viewHome(){
+  const totalQ=QUESTIONS.length, topics=new Set(QUESTIONS.map(q=>q.s+q.t)).size;
+  app.innerHTML = `<section class="view">
+    <div class="hero">
+      <div>
+        <p class="eyebrow">Leaving Certificate practice · Higher &amp; Ordinary</p>
+        <h1 style="margin-top:12px">Practise every topic. Walk into <span class="mark">June</span> ready.</h1>
+        <p class="lede">Exam-style questions for eight Leaving Cert subjects, each with a worked solution. Track what you've mastered, flag what needs work, and sit timed mock tests.</p>
+        <div class="cta"><a class="btn" href="#subjects">Start practising</a><a class="btn ghost" href="#mock">Try a mock test</a></div>
+        <div class="facts"><div><b>${totalQ}</b>practice questions</div><div><b>${SUBJECTS.length}</b>subjects</div><div><b>${topics}</b>topics</div></div>
+      </div>
+      <div id="sample"></div>
+    </div>
+
+    <div class="features">
+      <div><h3>Worked solutions</h3><p>Every question shows the method step by step, not just the final answer.</p></div>
+      <div><h3>Progress you can see</h3><p>Mark written answers as got it, partly or missed. Weak topics rise to the top of your progress page.</p></div>
+      <div><h3>Timed mock tests</h3><p>Mix questions from any subject and level, set a time limit, and get a score with topics to revisit.</p></div>
+    </div>
+
+    <div class="sec-head"><h2>Subjects</h2><p>Each card shows how the subject is examined, so you know where the marks are.</p></div>
+    <div class="subjects">${SUBJECTS.map(subjectCard).join("")}</div>
+
+    <div class="note"><b>About these questions.</b> They are original practice questions written in the style of the Leaving Certificate, not copies of State exam papers. For real past papers and the official marking schemes, use the SEC's <a href="https://www.examinations.ie/exammaterialarchive/" target="_blank" rel="noopener">exam material archive</a>. Physics, Chemistry and Biology follow the new specifications introduced in September 2025.</div>
+  </section>`;
+  const sampleQ = byId["maths-12"];
+  const card = questionCard(sampleQ,{feature:true, showSubject:true, noBookmark:true});
+  const label=document.createElement("p"); label.className="eyebrow"; label.style.marginBottom="10px"; label.textContent="Try one now";
+  $("#sample").append(label, card);
+}
+
+function viewSubjects(){
+  app.innerHTML = `<section class="view">
+    <div class="sec-head"><div><p class="eyebrow">Choose a subject</p><h2 style="margin-top:6px">All subjects</h2></div><p>Pick a subject to practise by topic and level. Your progress is saved in this browser.</p></div>
+    <div class="subjects">${SUBJECTS.map(subjectCard).join("")}</div>
+  </section>`;
+}
+
+const pstate = {level:"all", topic:"all", status:"all"};
+function viewPractice(sid){
+  const s=SUBJ[sid]; const all=QUESTIONS.filter(q=>q.s===sid);
+  const topics=[...new Set(all.map(q=>q.t))];
+  if(pstate.sid!==sid){ pstate.sid=sid; pstate.level="all"; pstate.topic="all"; pstate.status="all"; }
+  app.innerHTML = `<section class="view">
+    <div class="practice-head">
+      <a href="#subjects" style="font-weight:700;text-decoration:none">← All subjects</a>
+      <h1>${esc(s.name)}</h1>
+      <p style="color:var(--muted);max-width:70ch">${esc(s.exam)}</p>
+      <div id="sstats"></div>
+    </div>
+    <div class="toolbar" id="filters"></div>
+    <div class="qlist" id="qlist"></div>
+  </section>`;
+  const statusOf = q=>{ const x=store[q.id]||{}; return x.r; };
+  function renderStats(){
+    const st=statsFor(sid), pct=st.total?Math.round(st.done/st.total*100):0;
+    $("#sstats").innerHTML = `<div class="qmeta"><span class="chip">${st.done} of ${st.total} tried</span><span class="chip good">${st.right} got it</span><span class="chip warn">${st.partly} partly</span><span class="chip bad">${st.wrong} need work</span></div><div class="bar" style="max-width:420px"><span style="width:${pct}%"></span></div>`;
+  }
+  function renderFilters(){
+    const lvPool = all;
+    const cnt = (fn)=>all.filter(q=>matchesLevel(q,pstate.level)&&(pstate.topic==="all"||q.t===pstate.topic)&&fn(q)).length;
+    const pill=(group,val,label,n)=>`<button type="button" class="pill" data-g="${group}" data-v="${esc(val)}" aria-pressed="${pstate[group]===val}">${esc(label)}${n!==undefined?`<span class="n">${n}</span>`:""}</button>`;
+    $("#filters").innerHTML = `
+      <div class="filters"><span class="lbl">Level</span>${pill("level","all","All")}${pill("level","H","Higher")}${pill("level","O","Ordinary")}</div>
+      <div class="filters"><span class="lbl">Topic</span>${pill("topic","all","All topics")}${topics.map(t=>pill("topic",t,t,lvPool.filter(q=>q.t===t&&matchesLevel(q,pstate.level)).length)).join("")}</div>
+      <div class="filters"><span class="lbl">Show</span>${pill("status","all","Everything",cnt(()=>true))}${pill("status","new","Not tried",cnt(q=>!statusOf(q)))}${pill("status","weak","Needs work",cnt(q=>statusOf(q)==="wrong"||statusOf(q)==="partly"))}${pill("status","bm","Bookmarked",cnt(q=>store[q.id]&&store[q.id].bm))}</div>`;
+    $("#filters").querySelectorAll(".pill").forEach(b=>b.addEventListener("click",()=>{ pstate[b.dataset.g]=b.dataset.v; renderFilters(); renderList(); }));
+  }
+  function renderList(){
+    const list=$("#qlist"); list.innerHTML="";
+    const qs = all.filter(q=>matchesLevel(q,pstate.level)&&(pstate.topic==="all"||q.t===pstate.topic)&&(
+      pstate.status==="all" || (pstate.status==="new"&&!statusOf(q)) || (pstate.status==="weak"&&(statusOf(q)==="wrong"||statusOf(q)==="partly")) || (pstate.status==="bm"&&store[q.id]&&store[q.id].bm)));
+    if(!qs.length){ list.innerHTML = `<div class="empty">No questions match these filters. ${pstate.status==="bm"?"Use the Bookmark button on any question to save it here.":pstate.status==="weak"?"Nothing needs work yet. Questions you miss or only partly get will appear here.":"Try a different level or topic."}</div>`; return; }
+    qs.forEach(q=>list.appendChild(questionCard(q,{onChange:()=>{renderStats(); renderFilters();}})));
+  }
+  renderStats(); renderFilters(); renderList();
+}
+
+/* mock test */
+let mock=null, mockTimer=null;
+function viewMock(){
+  clearInterval(mockTimer);
+  if(mock && mock.state==="running") return renderMockRun();
+  if(mock && mock.state==="done") return renderMockResult();
+  app.innerHTML = `<section class="view">
+    <div class="sec-head"><div><p class="eyebrow">Exam conditions</p><h2 style="margin-top:6px">Mock test</h2></div><p>Questions are drawn at random. Mock answers are scored at the end and added to your progress.</p></div>
+    <form class="panel" id="mockform">
+      <div class="form-grid">
+        <label class="f" for="m_subj">Subject<select id="m_subj"><option value="mix">Mixed: all subjects</option>${SUBJECTS.map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join("")}</select></label>
+        <label class="f" for="m_lv">Level<select id="m_lv"><option value="all">Higher &amp; Ordinary</option><option value="H">Higher</option><option value="O">Ordinary</option></select></label>
+        <label class="f" for="m_n">Questions<select id="m_n"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></label>
+        <label class="f" for="m_t">Time limit<select id="m_t"><option value="10">10 minutes</option><option value="20" selected>20 minutes</option><option value="30">30 minutes</option><option value="0">No limit</option></select></label>
+      </div>
+      <div class="qactions"><button class="btn" type="submit">Start mock test</button><span id="m_info" style="color:var(--muted);font-size:14px"></span></div>
+    </form>
+  </section>`;
+  const f=$("#mockform"), info=$("#m_info");
+  const pool=()=>QUESTIONS.filter(q=>($("#m_subj").value==="mix"||q.s===$("#m_subj").value)&&matchesLevel(q,$("#m_lv").value));
+  const upd=()=>{ const n=pool().length, want=+$("#m_n").value; info.textContent = n<want ? `Only ${n} questions match, so the test will have ${n}.` : `${n} questions available for this choice.`; };
+  f.addEventListener("change",upd); upd();
+  f.addEventListener("submit",e=>{
+    e.preventDefault();
+    const p=pool().slice(); for(let i=p.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [p[i],p[j]]=[p[j],p[i]]; }
+    const qs=p.slice(0,+$("#m_n").value);
+    if(!qs.length) return;
+    const mins=+$("#m_t").value;
+    mock={state:"running", qs, i:0, answers:{}, end: mins? Date.now()+mins*60000 : null, mins};
+    renderMockRun();
+  });
+}
+function fmt(ms){ const s=Math.max(0,Math.round(ms/1000)); return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0"); }
+function renderMockRun(){
+  const q=mock.qs[mock.i];
+  app.innerHTML = `<section class="view">
+    <div class="panel">
+      <div class="timer"><div><p class="eyebrow">Mock test</p><b style="font-family:var(--display);font-size:22px">Question ${mock.i+1} of ${mock.qs.length}</b></div>
+        <span class="clock" id="clock">${mock.end?fmt(mock.end-Date.now()):"No limit"}</span></div>
+      <div class="steps">${mock.qs.map((x,k)=>`<span class="${mock.answers[x.id]?"done":k===mock.i?"cur":""}"></span>`).join("")}</div>
+    </div>
+    <div id="mq"></div>
+    <div class="qactions"><button class="btn ghost" type="button" id="prev" ${mock.i===0?"disabled":""}>Previous</button>
+      <button class="btn" type="button" id="next">${mock.i===mock.qs.length-1?"Finish test":"Next question"}</button>
+      <button class="btn ghost" type="button" id="quit">End test now</button></div>
+  </section>`;
+  const card=questionCard(q,{mock:true, showSubject:true, noBookmark:true, onAnswer:r=>{ mock.answers[q.id]=r; }});
+  $("#mq").appendChild(card);
+  if(mock.answers[q.id]){ const note=document.createElement("p"); note.style.cssText="color:var(--muted);font-size:14px"; note.textContent="You've already answered this one. Answering again replaces your earlier answer."; $("#mq").appendChild(note); }
+  $("#prev").onclick=()=>{ mock.i--; renderMockRun(); };
+  $("#next").onclick=()=>{ if(mock.i===mock.qs.length-1) finishMock(); else { mock.i++; renderMockRun(); } };
+  $("#quit").onclick=finishMock;
+  clearInterval(mockTimer);
+  if(mock.end){ mockTimer=setInterval(()=>{ const left=mock.end-Date.now(); const c=$("#clock"); if(c){ c.textContent=fmt(left); c.classList.toggle("low", left<60000); } if(left<=0) finishMock(); },500); }
+}
+function finishMock(){
+  clearInterval(mockTimer);
+  Object.entries(mock.answers).forEach(([id,r])=>setResult(id,r));
+  mock.state="done"; mock.finished=Date.now(); renderMockResult();
+}
+function renderMockResult(){
+  const qs=mock.qs, ans=mock.answers;
+  const right=qs.filter(q=>ans[q.id]==="right").length, partly=qs.filter(q=>ans[q.id]==="partly").length, missed=qs.filter(q=>ans[q.id]==="wrong").length, skipped=qs.filter(q=>!ans[q.id]).length;
+  const scorePct = Math.round((right + partly*0.5)/qs.length*100);
+  const weakTopics=[...new Set(qs.filter(q=>ans[q.id]!=="right").map(q=>SUBJ[q.s].name+": "+q.t))];
+  app.innerHTML = `<section class="view">
+    <div class="sec-head"><div><p class="eyebrow">Mock test finished</p><h2 style="margin-top:6px">Your result</h2></div></div>
+    <div class="panel">
+      <div class="score"><div><b>${scorePct}%</b><span>score (partly = half)</span></div><div><b>${right}</b><span>got it</span></div><div><b>${partly}</b><span>partly</span></div><div><b>${missed}</b><span>missed</span></div><div><b>${skipped}</b><span>not answered</span></div></div>
+      <div><p class="eyebrow" style="margin-bottom:8px">Topics to revisit</p>${weakTopics.length?`<div class="weak">${weakTopics.map(t=>`<span class="chip bad">${esc(t)}</span>`).join("")}</div>`:'<p>Nothing to revisit from this test. Well done.</p>'}</div>
+      <div class="qactions"><button class="btn" type="button" id="again">New mock test</button><a class="btn ghost" href="#progress">See my progress</a></div>
+    </div>
+    <div class="tablebox"><table class="prog-table"><thead><tr><th>#</th><th>Question</th><th>Topic</th><th>Result</th></tr></thead><tbody>
+      ${qs.map((q,k)=>{ const r=ans[q.id]; const chip=r==="right"?'<span class="chip good">Got it</span>':r==="partly"?'<span class="chip warn">Partly</span>':r==="wrong"?'<span class="chip bad">Missed</span>':'<span class="chip">Not answered</span>';
+        const plain=q.q.replace(/<pre>[\s\S]*?<\/pre>/g," [code] ").replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim();
+        return `<tr><td class="num">${k+1}</td><td style="min-width:200px">${esc(plain.length>110?plain.slice(0,110)+"…":plain)}</td><td>${esc(SUBJ[q.s].name)} · ${esc(q.t)}</td><td>${chip}</td></tr>`; }).join("")}
+    </tbody></table></div>
+  </section>`;
+  $("#again").onclick=()=>{ mock=null; viewMock(); };
+}
+
+/* progress */
+function viewProgress(){
+  const totalDone=QUESTIONS.filter(q=>store[q.id]&&store[q.id].r).length;
+  const bms=QUESTIONS.filter(q=>store[q.id]&&store[q.id].bm);
+  const weakBy = sid=>[...new Set(QUESTIONS.filter(q=>q.s===sid&&store[q.id]&&(store[q.id].r==="wrong"||store[q.id].r==="partly")).map(q=>q.t))];
+  app.innerHTML = `<section class="view">
+    <div class="sec-head"><div><p class="eyebrow">Saved in this browser</p><h2 style="margin-top:6px">My progress</h2></div><p>${totalDone} of ${QUESTIONS.length} questions tried · ${bms.length} bookmarked</p></div>
+    ${totalDone===0?`<div class="empty">You haven't answered any questions yet. Pick a subject and answer a few. Your results will show up here, with weak topics listed for each subject.<div style="margin-top:14px"><a class="btn" href="#subjects">Choose a subject</a></div></div>`:""}
+    <div class="tablebox"><table class="prog-table">
+      <thead><tr><th>Subject</th><th>Tried</th><th>Got it</th><th>Accuracy</th><th>Topics to revisit</th></tr></thead>
+      <tbody>${SUBJECTS.map(s=>{ const st=statsFor(s.id); const acc=st.done?Math.round((st.right+st.partly*.5)/st.done*100)+"%":"—"; const w=weakBy(s.id);
+        return `<tr><td><a href="#${s.id}" style="font-weight:700">${esc(s.name)}</a><div class="bar" style="width:120px"><span style="width:${st.total?st.done/st.total*100:0}%"></span></div></td><td class="num">${st.done}/${st.total}</td><td class="num">${st.right}</td><td class="num">${acc}</td><td>${w.length?`<div class="weak">${w.map(t=>`<span class="chip bad">${esc(t)}</span>`).join("")}</div>`:'<span style="color:var(--muted)">None</span>'}</td></tr>`; }).join("")}</tbody>
+    </table></div>
+    <div><div class="sec-head" style="margin-bottom:12px"><h2 style="font-size:24px">Bookmarked questions</h2></div>
+      <div class="qlist" id="bmlist">${bms.length?"":'<div class="empty">No bookmarks yet. Use the Bookmark button on any question to keep it here for revision.</div>'}</div></div>
+    <div class="panel"><div><b>Start again</b><p style="color:var(--muted);font-size:14.5px">Clears every result and bookmark saved in this browser.</p></div>
+      <div class="confirm" id="reset"><button class="btn ghost small" type="button" id="r1">Reset my progress</button></div></div>
+  </section>`;
+  const list=$("#bmlist"); bms.forEach(q=>list.appendChild(questionCard(q,{showSubject:true,onChange:()=>{}})));
+  $("#r1").onclick=()=>{ $("#reset").innerHTML='<span>This can\'t be undone. Clear everything?</span><button class="btn small" type="button" id="r2" style="background:var(--bad);border-color:var(--bad)">Yes, clear it</button><button class="btn ghost small" type="button" id="r3">Cancel</button>';
+    $("#r2").onclick=()=>{ store={}; save(); viewProgress(); }; $("#r3").onclick=viewProgress; };
+}
+
+/* CAO points */
+const H_PTS={H1:100,H2:88,H3:77,H4:66,H5:56,H6:46,H7:37,H8:0}, O_PTS={O1:56,O2:46,O3:37,O4:28,O5:20,O6:12,O7:0,O8:0};
+const DEFAULT_ROWS=[["Mathematics","H","H3"],["English","H","H3"],["Gaeilge","H","H4"],["Biology","H","H2"],["Chemistry","H","H4"],["Computer Science","O","O1"],["Applied Maths","H","H5"]];
+let ptsRows = DEFAULT_ROWS.map(r=>r.slice());
+function viewPoints(){
+  app.innerHTML = `<section class="view">
+    <div class="sec-head"><div><p class="eyebrow">CAO</p><h2 style="margin-top:6px">Points calculator</h2></div><p>Your best six subjects count. Higher Level Maths at H6 or above earns 25 bonus points. The grades shown are an example; change them to yours.</p></div>
+    <div class="pts">
+      <div class="panel" id="prows"></div>
+      <div class="panel">
+        <div><p class="eyebrow">Total points</p><div class="total" id="ptotal">0</div><p id="pnote" style="color:var(--muted);font-size:14px;margin-top:6px"></p></div>
+        <table class="scale"><thead><tr><th>Higher</th><th>Points</th><th>Ordinary</th><th>Points</th></tr></thead><tbody>
+          ${Object.keys(H_PTS).map((g,k)=>{ const og=Object.keys(O_PTS)[k]; return `<tr><td>${g}</td><td>${H_PTS[g]}</td><td>${og}</td><td style="text-align:right">${O_PTS[og]}</td></tr>`; }).join("")}
+        </tbody></table>
+        <p style="font-size:13px;color:var(--muted)">Check the current scale and any course requirements on <a href="https://www.cao.ie" target="_blank" rel="noopener">cao.ie</a>.</p>
+      </div>
+    </div>
+  </section>`;
+  renderPts();
+}
+function renderPts(){
+  const box=$("#prows");
+  const pts=ptsRows.map(([n,l,g])=>{ let p = l==="H"? H_PTS[g] : O_PTS[g]; return p; });
+  const bonus=ptsRows.map(([n,l,g])=> (n==="Mathematics"&&l==="H"&&H_PTS[g]>=46)?25:0);
+  const tot=pts.map((p,i)=>p+bonus[i]);
+  const best=tot.map((p,i)=>[p,i]).sort((a,b)=>b[0]-a[0]).slice(0,6).map(x=>x[1]);
+  box.innerHTML = `<div class="prow" style="font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700"><span class="sname">Subject</span><span>Level</span><span>Grade</span><span style="text-align:right">Points</span></div>`+
+    ptsRows.map(([n,l,g],i)=>`<div class="prow">
+      <input class="sname" id="pn${i}" value="${esc(n)}" aria-label="Subject ${i+1}" style="background:var(--paper);border:1.5px solid var(--line);border-radius:8px;padding:9px 10px;min-width:0">
+      <select id="pl${i}" aria-label="Level for ${esc(n)}"><option value="H" ${l==="H"?"selected":""}>Higher</option><option value="O" ${l==="O"?"selected":""}>Ordinary</option></select>
+      <select id="pg${i}" aria-label="Grade for ${esc(n)}">${Object.keys(l==="H"?H_PTS:O_PTS).map(x=>`<option ${x===g?"selected":""}>${x}</option>`).join("")}</select>
+      <span class="p ${best.includes(i)?"":"drop"}">${tot[i]}${bonus[i]?"*":""}</span></div>`).join("")+
+    `<p style="font-size:13px;color:var(--muted)">Struck-out rows are outside your best six. * includes the 25 bonus points for Higher Maths.</p>`;
+  ptsRows.forEach((r,i)=>{
+    $("#pn"+i).addEventListener("change",e=>{ r[0]=e.target.value.trim()||"Subject"; renderPts(); });
+    $("#pl"+i).addEventListener("change",e=>{ r[1]=e.target.value; r[2]= r[1]==="H"?"H4":"O3"; renderPts(); });
+    $("#pg"+i).addEventListener("change",e=>{ r[2]=e.target.value; renderPts(); });
+  });
+  const total=best.reduce((a,i)=>a+tot[i],0);
+  $("#ptotal").textContent=total;
+  $("#pnote").textContent = `Best six of ${ptsRows.length} subjects${bonus.some(b=>b)?", including the Higher Maths bonus":""}.`;
+}
+
+/* ---------- router ---------- */
+function route(){
+  clearInterval(mockTimer);
+  const h=(location.hash||"#home").slice(1);
+  let nav=h;
+  if(SUBJ[h]){ viewPractice(h); nav="subjects"; }
+  else if(h==="subjects") viewSubjects();
+  else if(h==="mock") viewMock();
+  else if(h==="progress") viewProgress();
+  else if(h==="points") viewPoints();
+  else { viewHome(); nav="home"; }
+  document.querySelectorAll("[data-nav]").forEach(a=>{ if(a.dataset.nav===nav) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
+}
+window.addEventListener("hashchange",()=>{ route(); window.scrollTo(0,0); });
+route();
+})();
+</script>
+</body>
+</html>
