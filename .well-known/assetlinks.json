@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.github.akhilendraverma.ardteistprep",
+      "sha256_cert_fingerprints": [
+        "74:47:BF:14:E3:33:47:04:3A:29:76:87:53:43:52:A7:2F:32:01:99:F5:14:22:64:DB:41:D7:F8:98:0C:25:F2"
+      ]
+    }
+  }
+]
