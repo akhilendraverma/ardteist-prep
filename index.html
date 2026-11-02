@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ardteist Prep</title>
 <meta name="description" content="Leaving Certificate practice questions with worked solutions, mock tests, progress tracking and a CAO points calculator.">
+<meta name="theme-color" content="#0E6A64">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Ardteist Prep">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
@@ -216,7 +224,7 @@ footer a{font-weight:700}
 <footer>
   <div class="wrap">
     <p><b style="color:var(--ink)">Official exam papers and marking schemes</b> are published by the State Examinations Commission in its <a href="https://www.examinations.ie/exammaterialarchive/" target="_blank" rel="noopener">exam material archive</a>. Subject specifications are on <a href="https://www.curriculumonline.ie/senior-cycle/" target="_blank" rel="noopener">curriculumonline.ie</a>.</p>
-    <p>Ardteist Prep's questions are original practice questions written in the style of the Leaving Certificate. The site is independent and not connected with the SEC, the NCCA or the Department of Education. Your progress is saved only in this browser.</p>
+    <p>Ardteist Prep's questions are original practice questions written in the style of the Leaving Certificate. The site is independent and not connected with the SEC, the NCCA or the Department of Education. Your progress is saved only on this device. <a href="privacy.html">Privacy policy</a></p>
   </div>
 </footer>
 
@@ -3171,6 +3179,14 @@ function route(){
 window.addEventListener("hashchange",()=>{ route(); window.scrollTo(0,0); });
 route();
 })();
+</script>
+<script>
+/* Offline support + app install */
+try{
+  if("serviceWorker" in navigator && /^https?:$/.test(location.protocol)){
+    window.addEventListener("load", ()=>{ navigator.serviceWorker.register("sw.js").catch(()=>{}); });
+  }
+}catch(e){}
 </script>
 </body>
 </html>
